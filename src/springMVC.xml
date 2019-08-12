@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/context  
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+     http://www.springframework.org/schema/mvc  
+     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"> 
+    
+    
+    <!--启动注解识别-->
+    <context:annotation-config/>
+
+    <context:component-scan base-package="com.tmall.controller">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+	<!--开通静态资源的访问-->
+    <mvc:annotation-driven />
+    
+    <mvc:default-servlet-handler />
+
+    <!-- 视图定位 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+	      <property name="prefix" value="/WEB-INF/jsp/" />
+	      <property name="suffix" value=".jsp" />  
+	</bean>
+	<!-- 拦截器 -->
+	<mvc:interceptors>    
+        <mvc:interceptor>    
+            <mvc:mapping path="/fore*"/>  
+            <bean class="com.tmall.interceptor.TmallInterceptor"/>      
+        </mvc:interceptor>  
+        <!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 --> 
+    </mvc:interceptors>  
+</beans>
